@@ -1,7 +1,12 @@
-# !usr/bin/env python
 # -*- coding: utf-8 -*-
+# !usr/bin/env python
 
-__author__ = 'quanxiandeng'
+"""
+    @author : ginxd
+    @contact : ginxdxd@gmail.com
+    @file : practise.py
+    @time : 3/12/15 上午10:13
+"""
 
 
 from sklearn.linear_model import LogisticRegression
@@ -9,6 +14,7 @@ from sklearn.linear_model import LogisticRegression
 # from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 import csv
+import get_titanic_data
 import numpy as np
 import pandas as pd
 
@@ -28,29 +34,14 @@ Cabin -- Which cabin the passenger was in.
 Embarked -- Where the passenger boarded the Titanic.
 '''
 
-def clean_data(frame, age_mean):
-    frame['Embarked'] = frame['Embarked'].fillna('S')
-
-    frame.loc[frame['Sex'] == 'male', 'Sex'] = 0   # 定位到某一列，然后修改此列
-    frame.loc[frame['Sex'] == 'female', 'Sex'] = 1
-
-    frame.loc[frame['Embarked'] == 'S', 'Embarked'] = 0
-    frame.loc[frame['Embarked'] == 'C', 'Embarked'] = 1
-    frame.loc[frame['Embarked'] == 'Q', 'Embarked'] = 2
-
-    frame['Fare'] = frame['Fare'].fillna(frame['Fare'].median())
-    frame['Age'] = frame['Age'].fillna(age_mean)
-    return frame
-
-
 def main():
-    path = '/Users/quanxiandeng/Downloads/Data/titanic'
+    training_set, label, test_set = get_titanic_data.load_data()
 
-    output_l_r = linear_regression(path)
+    # output_l_r = linear_regression(training_set, label, test_set)
     # output_l_r = list(output_l_r)
     # write_file(output_l_r)
 
-    output_svm = svm(path)
+    output_svm = svm(training_set, label, test_set)
     output_svm = list(output_svm)
     write_file(output_svm)
 
@@ -67,49 +58,17 @@ def write_file(output_label):
     f_out.close()
 
 
-def linear_regression(path):
+def linear_regression(training_set, label, test_set):
     clf = LogisticRegression()
-
-    column_keeped = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']
-    label, training_set_cleaned, age_mean = prepare_data(path, column_keeped)
-
-    clf.fit(training_set_cleaned, label)
-    # print 'the accuracy rate is  %d' %(clf.score(training_set_cleaned, label))
-    test_data = pd.read_csv(path + '/test.csv')
-    test_set = clean_data(test_data, age_mean)
-    test_set = np.array(test_set[column_keeped])
-
+    clf.fit(training_set, label)
     linear_output = clf.predict(test_set)
 
     return linear_output
 
 
-def prepare_data(path, column_keeped):
-    training_set = pd.read_csv(path + '/train.csv')
-
-    age_mean = training_set['Age'].median()
-    training_set_cleaned = clean_data(training_set, age_mean)
-    label = np.array(training_set_cleaned['Survived'])
-
-    # column_keeped = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']
-    training_set_cleaned = np.array(training_set_cleaned[column_keeped])
-
-
-    return label, training_set_cleaned, age_mean
-
-
-def svm(path):
+def svm(training_set, label, test_set):
     clf = SVC(kernel='linear')  # 'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'
-
-    column_keeped = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']
-    label, training_set_cleaned, age_mean = prepare_data(path, column_keeped)
-
-    clf.fit(training_set_cleaned, label)
-
-    test_data = pd.read_csv(path + '/test.csv')
-    test_set = clean_data(test_data, age_mean)
-    test_set = np.array(test_set[column_keeped])
-
+    clf.fit(training_set, label)
     svm_output = clf.predict(test_set)
 
     return svm_output
