@@ -13,14 +13,17 @@
 
 import numpy as np
 """
-    suppose that training_set'type is np.array
+    pca的参数：
+    training_set 即 样本
+    percent 数值越大，转换后的数据跟原数据越相似 取值范围 0－1
 """
+
 
 def pca(training_set, percent):
     mean_mat = training_set.mean(axis=0)
     diff_mat = training_set - mean_mat
     # cov_mat = np.dot(diff_mat.T, diff_mat)
-    cov_mat = np.cov(diff_mat, rowvar=0)  # rowvar 为1， 每行代表一个变量； 为0， 每列代表一个变量
+    cov_mat = np.cov(diff_mat, rowvar=0)  # rowvar 为1，每行代表一个变量； 为0，每列代表一个变量
     U, Sigma, VT = np.linalg.svd(cov_mat)
     k = get_k_from_percent(Sigma, percent)
     return np.dot(training_set, U[:k+1])
