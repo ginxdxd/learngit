@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
-# 上句必须写在最开头。
-__author__ = 'quanxiandeng'
-#!/usr/bin/env python
+# -*- coding: gbk -*-
+#!usr/bin/env python
+
+"""
+    @author : ginxd
+    @contact : ginxdxd@gmail.com
+    @file : NeuralNetwork.py
+    @time : 23/10/15
+"""
 
 
 # 以下代码为个人参考 andrew ng 神经网络部分
@@ -11,12 +17,13 @@ __author__ = 'quanxiandeng'
 http://blog.csdn.net/akunainiannian/article/details/40073903  BP神经网络Python实现（带有”增加充量项“）
 http://www.mamicode.com/info-detail-671452.html  神经网络和反向传播算法推导
 
-
-
 '''
+
+import math
+
 import numpy as np
 import pandas as pd
-import math
+
 
 '''
     useful features : Pclass  Sex   Age  SibSP  Parch   Fare  Embarked
@@ -24,8 +31,8 @@ import math
 '''
 
 def main():
-    # check = np.array([[2,3], [4,5]])
-    # check2 = check * check
+    # nn = neuralClass.NeuralNet(3,2,3,1)
+
     data, label = load_data()    # 得到训练集
     testdata = load_testdata()   # 得到测试集
     # data = data[:100]
@@ -35,17 +42,14 @@ def main():
     hiddenLayer = 1              # 隐藏层数
     hiddenUnits = data.shape[1]  # 每层激励单元数  number of neurons
     outputUnits = 1              # 输出单元数
-    # learningrate = math.pow(10, -1)
     learningrate = 0.005
     epson = math.pow(10, -6)  # 0.0001
     lumta = 0.5
     costsum = 0.0
-
+    data = list(data)
     label = label.as_matrix()    # dataframe to matrix
     data = data.as_matrix()
     testdata = testdata.as_matrix()
-
-    print type(data)
     finaltheta = Neur_net(data, label, hiddenLayer, hiddenUnits, outputUnits, learningrate, epson, costsum, lumta)
     hit = hittarget(test(finaltheta, data, label), label)
     finaloutput = test(finaltheta, testdata)
@@ -262,12 +266,12 @@ def hittarget(output, label):
     # check = len(difference[difference == 0])
     hit = (float(len(difference[difference == 0])) / float(len(label)))
     return hit
-# end hittarget
+#  end hittarget
 
-def stochasticgd():
-
-    return 1
-# end sgd
+# def stochasticgd():
+#
+#     return 1
+#  end sgd
 
 
 if __name__ == '__main__':
