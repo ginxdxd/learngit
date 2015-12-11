@@ -1,9 +1,20 @@
 # -*- coding: utf-8 -*-
 # !usr/bin/env python
-__author__ = 'quanxiandeng'
 
+"""
+    @author : ginxd
+    @contact : ginxdxd@gmail.com
+    @file : KNN.py
+    @time : 18/11/15
+"""
 import numpy as np
 import collections
+
+"""
+    knn算法：
+        一种分类的算法，找出与输入数据距离最相近的k个样本，距离公式可选欧氏，皮特森距离等，
+    k个样本中占比最多的类别就被预测为输入数据的类别。
+"""
 
 '''
  k的取值一般不超过20， 工程上k的取值为训练集的平方根
