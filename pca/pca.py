@@ -1,16 +1,21 @@
-# !usr/bin/env python
-# -*- coding :utf-8 -*-
+# -*- coding: utf-8 -*-
+#!usr/bin/env python
 
-__author__ = 'quanxiandeng'
-
+"""
+    @author : ginxd
+    @contact : ginxdxd@gmail.com
+    @file : pca.py
+    @time : 20/11/15
+"""
 #  np.dot 矩阵乘法   mat_a * mat_b 对位相乘
 
 
 
 import numpy as np
-'''
- suppose that training_set'type is np.array
-'''
+"""
+    suppose that training_set'type is np.array
+"""
+
 def pca(training_set, percent):
     mean_mat = training_set.mean(axis=0)
     diff_mat = training_set - mean_mat
