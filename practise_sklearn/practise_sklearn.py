@@ -4,8 +4,8 @@
 """
     @author : ginxd
     @contact : ginxdxd@gmail.com
-    @file : practise.py
-    @time : 3/12/15 上午10:13
+    @file : practise_sklearn.py
+    @time : 9/12/15
 """
 
 
@@ -40,6 +40,8 @@ def main():
     # output_l_r = linear_regression(training_set, label, test_set)
     # output_l_r = list(output_l_r)
     # write_file(output_l_r)
+
+
 
     output_svm = svm(training_set, label, test_set)
     output_svm = list(output_svm)
