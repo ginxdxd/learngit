@@ -3,6 +3,9 @@
 
 """
     @author : ginxd
+    @contact : ginxdxd@gmail.com
+    @file : recom_sys_item_based.py
+    @time : 9/12/15
 """
 
 
@@ -10,7 +13,15 @@ import numpy as np
 import pandas as pd
 
 N = 2   # 推荐商品的个数
-PATH = '/Users/quanxiandeng/Downloads/learn-git/RecommenderSystem/re_sys_movie_rate.csv'
+PATH = ''
+
+def main():
+    data_set = load_data(PATH)
+    training_set = clean_data(data_set)
+    training_set = np.array(training_set)
+    result_list = remcom(training_set, 0)
+    print result_list    # 返回的是被推荐商品的索引，以及预计的评分
+
 
 def predict_rate(training_set, user, item):
     n_item = training_set.shape[0]
@@ -39,6 +50,7 @@ def predict_rate(training_set, user, item):
 def get_sim(item_a, item_b):   # 欧氏距离
     return 1.0 / (1.0 + np.linalg.norm(item_a - item_b))
 
+
 def remcom(training_set, user):
     unrate_item = np.nonzero(training_set[:, user] == 0)[0]   # 找出该用户还没评分的商品索引
     if len(unrate_item) == 0:
@@ -49,12 +61,6 @@ def remcom(training_set, user):
         item_score.append((item, score))
     return sorted(item_score, key=lambda j: j[1], reverse=True)[:N]  # 倒序排列取前n个商品
 
-def main():
-    data_set = load_data(PATH)
-    training_set = clean_data(data_set)
-    training_set = np.array(training_set)
-    result_list = remcom(training_set, 0)
-    print result_list    # 返回的是被推荐商品的索引，以及预计的评分
 
 def clean_data(mat):
     mat = mat.fillna(0)
@@ -62,9 +68,10 @@ def clean_data(mat):
     return clean_mat
 
 
-def load_data(path):
-    file_in = pd.read_csv(path, encoding="gb2312")
+def load_data(PATH):
+    file_in = pd.read_csv(PATH, encoding="gb2312")
     return file_in
+
 
 if __name__ == '__main__':
     main()
